@@ -12,7 +12,14 @@ import { Checkbox, Radio } from "antd";
 // ────────────────────────────────────────────────────────────────────
 //
 
-export default function Index({ closeModal, open, item }) {
+export default function Index({
+  closeModal,
+  open,
+  item,
+  handleSelection,
+  selectedOption,
+  handleConfirm,
+}) {
   // ─── Global Variable ────────────────────────────────────────────────────────────
 
   // ─── States ─────────────────────────────────────────────────────────────────────
@@ -36,21 +43,32 @@ export default function Index({ closeModal, open, item }) {
         onClose={closeModal}
       >
         <section className="flex flex-col gap-4 mt-8">
-          <section>
-            <Radio label="عدم نیاز به صافکاری (جزِیی)">
-              عدم نیاز به صافکاری (جزیی)
-            </Radio>
-          </section>
-          <section>
-            <Radio label=" نیاز به صافکاری (متوسط)">
-              نیاز به صافکاری (متوسط)
-            </Radio>
-          </section>
-          <section>
-            <Radio label="تعویض (شدید)">تعویض (شدید) </Radio>
-          </section>
+          {[
+            {
+              label: "عدم نیاز به صافکاری (جزئی)",
+              accidentCoefficient: "MINOR",
+            },
+            {
+              label: "نیاز به صافکاری (متوسط)",
+              accidentCoefficient: "MAJOR",
+            },
+            { label: "تعویض (شدید)", accidentCoefficient: "EXTREME" },
+          ].map(({ label, accidentCoefficient }, index) => (
+            <section key={index}>
+              <Radio
+                value={accidentCoefficient} // مقدار رادیو
+                checked={
+                  selectedOption?.accidentCoefficient === accidentCoefficient
+                }
+                onChange={() => handleSelection(item.id, accidentCoefficient)}
+              >
+                {label}
+              </Radio>
+            </section>
+          ))}
           <Button
             onClick={() => {
+              handleConfirm();
               closeModal();
             }}
             className="mt-4"

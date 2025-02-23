@@ -16,6 +16,8 @@ export default function Index({
   calculateBox,
   activeTab,
   setActivTab,
+  buttonLoading,
+  setButtonLoading,
 }) {
   // ─── Global Variable ────────────────────────────────────────────────────────────
 
@@ -38,7 +40,6 @@ export default function Index({
   const [colorsLoading, setColorsLoading] = useState(false);
   const [kilometer, setKilometer] = useState(1000);
 
-  const [buttonLoading, setButtonLoading] = useState(false);
   // ─── Functions ──────────────────────────────────────────────────────────────────
   const getBrands = () => {
     setBrandLoading(true);
@@ -119,65 +120,7 @@ export default function Index({
         setButtonLoading(false);
       });
   };
-  // const calculatePrice = () => {
-  //   setButtonLoading(true);
-  //   let params = {
-  //     colorId: colorId?.value,
-  //     kilometer: kilometer,
 
-  //     carId: carId,
-  //   };
-  //   useAxiosWithToken
-  //     .post(api.car.calculatePrice, params)
-  //     .then((res) => {
-  //       setButtonLoading(false);
-  //       updateResultData(res.data);
-  //       showResultPanel();
-  //     })
-  //     .catch((err) => {
-  //       setButtonLoading(false);
-  //     });
-  // };
-  // const getChart = () => {
-  //   useAxios
-  //     .get(
-  //       api.car.getPriceChart +
-  //         `?carTypeId=${typeId?.value}&pageNo=0&pageSize=24`
-  //     )
-  //     .then((res) => {
-  //       let resultList = res.data.elements.reverse();
-  //       let priceList = [];
-  //       let monthList = [];
-  //       resultList.forEach((item, index) => {
-  //         let m = moment(item.jalaliPriceDate, "jYYYY/jM/jD");
-
-  //         if (m.jDate() === 1) {
-  //           priceList.push(item.price);
-  //           monthList.push(m.jYear() + "/" + (m.jMonth() + 1));
-  //         }
-  //       });
-  //       setChartPriceList(priceList);
-  //       setChartMonthList(monthList);
-  //     })
-  //     .catch((err) => {});
-  // };
-  // const clearFrom = () => {
-  //   setBrands([]);
-  //   setBrandId("");
-  //   setModels([]);
-  //   setModelId("");
-  //   setYears([]);
-  //   setYearId("");
-  //   setTypes([]);
-  //   setTypeId("");
-  //   setColors([]);
-  //   setColorId("");
-  //   setCarId("");
-  //   getBrands();
-  //   getColors();
-  //   setReplacedParts([]);
-  //   setColoredParts([]);
-  // };
   // ─── Life Cycle ─────────────────────────────────────────────────────────────────
   useEffect(() => {
     getBrands();
@@ -228,17 +171,6 @@ export default function Index({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modelId, typeId, yearId]);
 
-  const calculatePrice = () => {
-    setCalculateBox((prev) => ({
-      ...prev,
-      carId: carId,
-      colorId: colorId?.value,
-      kilometer: kilometer,
-    }));
-  };
-  useEffect(() => {
-    console.log(activeTab);
-  }, [activeTab]);
   //
   // ──────────────────────────────────────────────────── I ──────────
   //   :::::: R E N D E R : :  :   :    :     :        :          :
@@ -246,9 +178,9 @@ export default function Index({
   //
   return (
     <>
-      <section>
+      <section className="">
         <section
-          className={`${activeTab === 1 ? "visible" : "hidden"} mt-10 grid grid-cols-1 gap-8`}
+          className={`${activeTab === 1 ? "visible" : "hidden"} mt-10 grid bg-[#fcfcfc] p-4 rounded-lg    grid-cols-1 gap-8`}
         >
           <section className="">
             <Select
@@ -320,16 +252,8 @@ export default function Index({
           </Button> */}
           <Button
             loading={buttonLoading}
+            disabled={!carId || !colorId}
             className="mt-10 w-full text-xs"
-            onClick={() => {
-              setCalculateBox((prev) => ({
-                ...prev,
-                carId: carId,
-                colorId: colorId?.value,
-                kilometer: kilometer,
-              }));
-              setActivTab(2);
-            }}
           >
             محاسبه افت قیمت بازار
           </Button>
@@ -338,8 +262,13 @@ export default function Index({
             className="mt-10 w-full text-blue text-xs"
             outlined
             onClick={() => {
-              calculatePrice();
-              getChart();
+              setCalculateBox((prev) => ({
+                ...prev,
+                carId: carId,
+                colorId: colorId?.value,
+                kilometer: kilometer,
+              }));
+              setActivTab(2);
             }}
             disabled={!carId || !colorId}
           >

@@ -13,7 +13,7 @@ export const api = {
     getCarYearByModelInfo: baseUrl + "ex/car-type/get-car-year-by-model-info",
     searchCarTypeByCarModelAndYear:
       baseUrl + "ex/car-type/search-car-type-by-car-model-and-year",
-    calculatePrice: baseUrl + "ex/car/calculate-price/v2",
+    calculatePrice: baseUrl + "ex/car/calculate-insurance-price",
     searchUniqueCar: baseUrl + "ex/car/search-unique-car",
     getCarPriceChartByTypeId:
       baseUrl + "car-price-chart/get-car-price-chart-by-type-id",
