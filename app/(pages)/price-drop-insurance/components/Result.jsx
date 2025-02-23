@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-
+import Image from "next/image";
 //
 // ────────────────────────────────────────────────────────── I ──────────
 //   :::::: C O M P O N E N T : :  :   :    :     :        :          :
@@ -14,8 +14,12 @@ export default function Index({ resultData, activeTab }) {
   }
 
   let numberStr = String(resultData.price);
+  let numberStr1 = String(resultData.priceUp);
+  let numberStr2 = String(resultData.priceDown);
+
   let price = formatNumber(numberStr);
-  let [data, setData] = useState();
+  let price1 = formatNumber(numberStr1);
+  let price2 = formatNumber(numberStr2);
   return (
     <>
       <section
@@ -74,8 +78,27 @@ export default function Index({ resultData, activeTab }) {
             </>
           ))}
         <section className="w-full bg-[#fcfcfc]  rounded-lg p-4 mt-4">
-          <h3 className="text-center"> قیمت خودرو</h3>
-          {/* <Image alt="" src={data.imageUrl} /> */}
+          <h3 className="text-center text-lg"> قیمت خودرو</h3>
+          <h4 className="text-center mt-2 text-[#ffc114] text-base">
+            {resultData.nickName}
+          </h4>
+          <section className="w-full bg-[#fcfcfc] text-xs flex justify-center flex-col gap-5 items-center  rounded-lg p-4 mt-4">
+            <Image alt="" src={resultData.imageUrl} width={100} height={100} />
+            <section className="flex w-full gap-2">
+              <div className="flex flex-col   gap-3">
+                <div> حداقل قیمت بازار </div>
+                <div className="text-center">{price2} تومان</div>
+              </div>
+              <div className="flex flex-col gap-3">
+                <div>قیمت کارشناسی</div>
+                <div className="text-center">{price} تومان</div>
+              </div>
+              <div className="flex flex-col gap-3">
+                <div> حداکثر قیمت بازار </div>
+                <div className="text-center">{price1} تومان</div>
+              </div>
+            </section>
+          </section>
         </section>
       </section>
     </>
