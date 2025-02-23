@@ -181,9 +181,15 @@ export default function Index() {
   const damagedParts = usePriceDropStore((state) => state.damagedParts);
   const replacedParts = usePriceDropStore((state) => state.replacedParts);
   const updateResultData = usePriceDropStore((state) => state.updateResultData);
-  const updateColoredParts = usePriceDropStore((state) => state.updateColoredParts);
-  const updateDamagedParts = usePriceDropStore((state) => state.updateDamagedParts);
-  const updateReplacedParts = usePriceDropStore((state) => state.updateReplacedParts);
+  const updateColoredParts = usePriceDropStore(
+    (state) => state.updateColoredParts
+  );
+  const updateDamagedParts = usePriceDropStore(
+    (state) => state.updateDamagedParts
+  );
+  const updateReplacedParts = usePriceDropStore(
+    (state) => state.updateReplacedParts
+  );
   // ─── Functions ──────────────────────────────────────────────────────────────────
   const partsOnchange = (e, type) => {
     if (type === "color") {
@@ -224,15 +230,7 @@ export default function Index() {
   };
 
   // ─── Life Cycle ─────────────────────────────────────────────────────────────────
-  /*  useEffect(() => {
-    consoleLog_Blue(coloredParts, "Colored Parts");
-  }, [coloredParts]);
-  useEffect(() => {
-    consoleLog_Red(damagedParts, "Damaged Parts");
-  }, [damagedParts]);
-  useEffect(() => {
-    consoleLog_green(replacedParts, "Replaced Parts");
-  }, [replacedParts]); */
+
   //
   // ──────────────────────────────────────────────────── I ──────────
   //   :::::: R E N D E R : :  :   :    :     :        :          :
@@ -240,30 +238,54 @@ export default function Index() {
   //
   return (
     <>
-      <section className={`h-[200px] ${!resultPanelShow ? "block" : "hidden"} bg-[#F6F6FB] w-full relative min-h-[1053px] pt-[58px] mt-[78px]`}>
-        <Image src='/assets/svg/price-drop-vec1.svg' alt='' className='absolute top-[-100px] ' width={935} height={1022} />
-        <Image src='/assets/svg/price-drop-vec2.svg' alt='' className='absolute bottom-[0] left-[-60px]' width={935} height={1022} />
-        <section className='w-[1171px] max-w-full h-[400px] m-auto z-40 relative'>
-          <h1 className='text-[#191919] m-auto text-[28px] font-semibold text-center'>محاسبه افت قیمت خودرو</h1>
-          <p className='w-[652px] max-w-full text-center m-auto text-lg font-normal mt-[24px]'>
-            شما می‌توانید محل دقیق آسیب خودرو را با کلیک روی نقاط آبی و پر کردن موارد زیر آن مشخص کنید تا بعد از تکمیل اطلاعات ، افت قیمت ماشین شما
+      <section
+        className={`h-[200px] ${!resultPanelShow ? "block" : "hidden"} bg-[#F6F6FB] w-full relative min-h-[1053px] pt-[58px] mt-[78px]`}
+      >
+        <Image
+          src="/assets/svg/price-drop-vec1.svg"
+          alt=""
+          className="absolute top-[-100px] "
+          width={935}
+          height={1022}
+        />
+        <Image
+          src="/assets/svg/price-drop-vec2.svg"
+          alt=""
+          className="absolute bottom-[0] left-[-60px]"
+          width={935}
+          height={1022}
+        />
+        <section className="w-[1171px] max-w-full h-[400px] m-auto z-40 relative">
+          <h1 className="text-[#191919] m-auto text-[28px] font-semibold text-center">
+            محاسبه افت قیمت خودرو
+          </h1>
+          <p className="w-[652px] max-w-full text-center m-auto text-lg font-normal mt-[24px]">
+            شما می‌توانید محل دقیق آسیب خودرو را با کلیک روی نقاط آبی و پر کردن
+            موارد زیر آن مشخص کنید تا بعد از تکمیل اطلاعات ، افت قیمت ماشین شما
             محاسبه شود.
           </p>
-          <section className='flex justify-between mt-[61px]'>
-            <section className='w-[221px] h-[498px]'>
+          <section className="flex justify-between mt-[61px]">
+            <section className="w-[221px] h-[498px]">
               <SelectedPartView depList={dep} />
             </section>
-            <section className='w-[689px] h-[468px] flex justify-center items-center'>
+            <section className="w-[689px] h-[468px] flex justify-center items-center">
               <Front activeSide={activeSide} partsOnchange={partsOnchange} />
               <Back activeSide={activeSide} partsOnchange={partsOnchange} />
               <Right activeSide={activeSide} partsOnchange={partsOnchange} />
               <Left activeSide={activeSide} partsOnchange={partsOnchange} />
             </section>
-            <section className='w-[221px] h-[520px] flex flex-col justify-between'>
-              <SideSelector activeSide={activeSide} setActiveSide={setActiveSide} />
+            <section className="w-[221px] h-[520px] flex flex-col justify-between">
+              <SideSelector
+                activeSide={activeSide}
+                setActiveSide={setActiveSide}
+              />
             </section>
           </section>
-          <CalculateBox showResultPanel={showResultPanel} coloredParts={coloredParts} replacedParts={replacedParts} />
+          <CalculateBox
+            showResultPanel={showResultPanel}
+            coloredParts={coloredParts}
+            replacedParts={replacedParts}
+          />
         </section>
       </section>
 
