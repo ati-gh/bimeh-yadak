@@ -250,17 +250,10 @@ export default function Index({
           {/*  <Button className="ml-2 mt-10" dark onClick={clearFrom}>
             پاک کردن اطلاعات
           </Button> */}
-          <Button
-            loading={buttonLoading}
-            disabled={!carId || !colorId}
-            className="mt-10 w-full text-xs"
-          >
-            محاسبه افت قیمت بازار
-          </Button>
+
           <Button
             loading={buttonLoading}
             className="mt-10 w-full text-blue text-xs"
-            outlined
             onClick={() => {
               setCalculateBox((prev) => ({
                 ...prev,

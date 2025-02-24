@@ -30,15 +30,15 @@ export default function Index({
       } else if (type === "danger") {
         return "text-red border-[2px] border border-red";
       } else {
-        return "text-black border-[2px] border border-primary";
+        return "text-primary border-[2px] border border-primary";
       }
     } else {
       if (type === "primary") {
-        return "bg-primary text-black";
+        return "bg-primary text-white";
       } else if (type === "danger") {
         return "bg-red text-white";
       } else {
-        return "bg-primary text-black";
+        return "bg-primary text-white";
       }
     }
   };

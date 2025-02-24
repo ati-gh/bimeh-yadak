@@ -65,7 +65,7 @@ export default function Index() {
           activeTab={activeTab}
         />
         <Result resultData={resultData} activeTab={activeTab} />
-        <Practice />
+        {/* <Practice /> */}
       </section>
     </>
   );

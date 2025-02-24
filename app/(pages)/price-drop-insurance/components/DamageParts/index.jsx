@@ -35,6 +35,10 @@ export default function Index({
     allDisabled: false,
     lastDisabled: false,
   });
+  const [checkboxes, setCheckboxes] = useState({
+    body: false,
+    engine: false,
+  });
 
   // ─── Functions ──────────────────────────────────────────────────────────────────
   const closeModal = () => {
@@ -83,14 +87,12 @@ export default function Index({
   }, [calculateBox]);
 
   const handleCheckboxChange = (checked, item, index) => {
-    console.log(checked);
-
     if (item.parameter.includes("اتاق")) {
       if (checked) {
         setDisabledStates({ allDisabled: true, lastDisabled: false });
         setSelectedDamages([
           { defectedPartId: item.id, accidentCoefficient: "EXTREME" },
-        ]); // فقط آیتم "اتاق" اضافه شود
+        ]);
       } else {
         setDisabledStates({ allDisabled: false, lastDisabled: false });
         setSelectedDamages([]);
@@ -112,18 +114,17 @@ export default function Index({
         return prev.filter((damage) => damage.defectedPartId !== item.id);
       }
     });
+
+    // Open modal for non-replacement items
+    if (!item.parameter.includes("خودرو (تعویض)")) {
+      setItem(item);
+      setOpen(true);
+    }
   };
-  // useEffect(() => {
-  //   console.log(checked);
-  // }, [checked]);
-  //
-  // ──────────────────────────────────────────────────── I ──────────
-  //   :::::: R E N D E R : :  :   :    :     :        :          :
-  // ──────────────────────────────────────────────────────────────
-  //
+
   return (
     <>
-      <section className=" ">
+      <section className="">
         {open && (
           <MoadalDamaged
             handleSelection={handleSelection}
@@ -135,7 +136,7 @@ export default function Index({
           />
         )}
         <section
-          className={`${activeTab === 2 ? "visible" : "hidden"} mt-6 bg-[#fcfcfc]  p-4 rounded-lg grid grid-cols-1 gap-8`}
+          className={`${activeTab === 2 ? "visible" : "hidden"} mt-6 bg-[#fcfcfc] p-4 rounded-lg grid grid-cols-1 gap-8`}
         >
           <h2 className="mr-4">نقاط آسیب دیده</h2>
           {depreciation.map((item, index) => {
@@ -143,27 +144,16 @@ export default function Index({
               (damage) => damage.defectedPartId === item.id
             );
             return (
-              <section
-                onClick={() => {
-                  const newChecked = !isChecked;
-                  handleCheckboxChange(newChecked, item, index);
-
-                  if (!item.parameter.includes("خودرو (تعویض)")) {
-                    setItem(item);
-                    setOpen(true);
-                  }
-                  if (item.parameter.includes("خودرو (تعویض)")) {
-                    setSelectedDamages((prev) => [
-                      ...prev,
-                      {
-                        defectedPartId: item.id,
-                        accidentCoefficient: "EXTREME",
-                      },
-                    ]);
-                  }
-                }}
+              <label
                 key={item.id}
-                className={`${(disabledStates.allDisabled && !item.parameter.includes("اتاق خودرو")) || (disabledStates.lastDisabled && index === depreciation.length - 1) ? "text-gray-400" : "text-[#505050]"} w-full h-auto bg-white flex items-center gap-4 p-4 shadow-sm rounded-lg `}
+                className={`${
+                  (disabledStates.allDisabled &&
+                    !item.parameter.includes("اتاق")) ||
+                  (disabledStates.lastDisabled &&
+                    index === depreciation.length - 1)
+                    ? "text-gray-400"
+                    : "text-[#505050]"
+                } w-full h-auto bg-white flex items-center gap-4 p-4 shadow-sm rounded-lg cursor-pointer`}
               >
                 <Checkbox
                   checked={isChecked}
@@ -178,8 +168,8 @@ export default function Index({
                       index === depreciation.length - 1)
                   }
                 />
-                {item.parameter}
-              </section>
+                <span>{item.parameter}</span>
+              </label>
             );
           })}
         </section>
@@ -187,9 +177,6 @@ export default function Index({
         <section
           className={`${activeTab === 2 ? "visible" : "hidden"} flex justify-center gap-4`}
         >
-          <Button loading={buttonLoading} className="mt-10 w-full text-xs">
-            محاسبه افت قیمت بازار
-          </Button>
           <Button
             onClick={() => {
               const newDetails = [...selectedDamages];
@@ -201,7 +188,6 @@ export default function Index({
             }}
             loading={buttonLoading}
             className="mt-10 w-full text-xs"
-            outlined
           >
             محاسبه افت قیمت بیمه
           </Button>
