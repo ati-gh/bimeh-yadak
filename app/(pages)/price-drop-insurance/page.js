@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import CalculateBox from "./components/CalculateBox";
 import DamageParts from "./components/DamageParts";
 import Result from "./components/Result";
+import Practice from "./components/Practice";
 import { api } from "@/api";
 
 import { useAxiosWithToken } from "@/hooks";
@@ -45,7 +46,7 @@ export default function Index() {
   //
   return (
     <>
-      <section className={`mt-20  mx-auto   w-[95%]  `}>
+      <section className={`mt-20  mx-auto  max-w-[724px]  w-[95%]  `}>
         <CalculateBox
           setCalculateBox={setCalculateBox}
           calculateBox={calculateBox}
@@ -64,6 +65,7 @@ export default function Index() {
           activeTab={activeTab}
         />
         <Result resultData={resultData} activeTab={activeTab} />
+        <Practice />
       </section>
     </>
   );

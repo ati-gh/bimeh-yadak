@@ -180,7 +180,7 @@ export default function Index({
     <>
       <section className="">
         <section
-          className={`${activeTab === 1 ? "visible" : "hidden"} mt-10 grid bg-[#fcfcfc] p-4 rounded-lg    grid-cols-1 gap-8`}
+          className={`${activeTab === 1 ? "visible" : "hidden"} mt-20 grid bg-[#fcfcfc] p-4 rounded-lg    grid-cols-1 gap-8`}
         >
           <section className="">
             <Select

@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/common";
 //
 // ────────────────────────────────────────────────────────── I ──────────
 //   :::::: C O M P O N E N T : :  :   :    :     :        :          :
@@ -23,7 +25,7 @@ export default function Index({ resultData, activeTab }) {
   return (
     <>
       <section
-        className={`${activeTab === 3 ? "visible" : "hidden"} mb-4 text-sm w-full`}
+        className={`${activeTab === 3 ? "visible" : "hidden"} mb-4 flex items-center flex-col text-sm w-full`}
       >
         <h2 className={` pt-4`}>
           <span className="w-2 h-2 rounded-full ml-1 bg-yellow-500 inline-block"></span>
@@ -84,7 +86,7 @@ export default function Index({ resultData, activeTab }) {
           </h4>
           <section className="w-full bg-[#fcfcfc] text-xs flex justify-center flex-col gap-5 items-center  rounded-lg p-4 mt-4">
             <Image alt="" src={resultData.imageUrl} width={100} height={100} />
-            <section className="flex w-full gap-2">
+            <section className="flex  gap-2">
               <div className="flex flex-col   gap-3">
                 <div> حداقل قیمت بازار </div>
                 <div className="text-center">{price2} تومان</div>
@@ -100,6 +102,9 @@ export default function Index({ resultData, activeTab }) {
             </section>
           </section>
         </section>
+        <Link href="/" className="mt-8 w-full">
+          <Button className="w-full">بازگشت به صفحه اصلی</Button>
+        </Link>
       </section>
     </>
   );

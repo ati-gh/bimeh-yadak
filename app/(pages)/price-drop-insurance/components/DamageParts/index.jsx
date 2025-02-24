@@ -31,6 +31,10 @@ export default function Index({
   const [selectedDamages, setSelectedDamages] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
   const [isBodyReplaced, setIsBodyReplaced] = useState(false);
+  const [disabledStates, setDisabledStates] = useState({
+    allDisabled: false,
+    lastDisabled: false,
+  });
 
   // ─── Functions ──────────────────────────────────────────────────────────────────
   const closeModal = () => {
@@ -78,6 +82,40 @@ export default function Index({
     }
   }, [calculateBox]);
 
+  const handleCheckboxChange = (checked, item, index) => {
+    console.log(checked);
+
+    if (item.parameter.includes("اتاق")) {
+      if (checked) {
+        setDisabledStates({ allDisabled: true, lastDisabled: false });
+        setSelectedDamages([
+          { defectedPartId: item.id, accidentCoefficient: "EXTREME" },
+        ]); // فقط آیتم "اتاق" اضافه شود
+      } else {
+        setDisabledStates({ allDisabled: false, lastDisabled: false });
+        setSelectedDamages([]);
+      }
+      return;
+    }
+
+    if (item.parameter.includes("موتور")) {
+      setDisabledStates((prev) => ({ ...prev, lastDisabled: checked }));
+    }
+
+    setSelectedDamages((prev) => {
+      if (checked) {
+        return [
+          ...prev,
+          { defectedPartId: item.id, accidentCoefficient: "EXTREME" },
+        ];
+      } else {
+        return prev.filter((damage) => damage.defectedPartId !== item.id);
+      }
+    });
+  };
+  // useEffect(() => {
+  //   console.log(checked);
+  // }, [checked]);
   //
   // ──────────────────────────────────────────────────── I ──────────
   //   :::::: R E N D E R : :  :   :    :     :        :          :
@@ -100,45 +138,50 @@ export default function Index({
           className={`${activeTab === 2 ? "visible" : "hidden"} mt-6 bg-[#fcfcfc]  p-4 rounded-lg grid grid-cols-1 gap-8`}
         >
           <h2 className="mr-4">نقاط آسیب دیده</h2>
-          {depreciation.map((item) => (
-            <section
-              onClick={() => {
-                if (item.parameter.includes("اتاق خودرو (تعویض)")) {
-                  setIsBodyReplaced(true);
-                } else {
-                  setIsBodyReplaced(false);
-                }
-                if (!item.parameter.includes("تعویض")) {
-                  setItem(item);
-                  setOpen(true);
-                }
-                if (item.parameter.includes("تعویض")) {
-                  setSelectedDamages((prev) => [
-                    ...prev,
-                    { defectedPartId: item.id, accidentCoefficient: "EXTREME" },
-                  ]);
-                }
-              }}
-              key={item.id}
-              className="w-full h-auto bg-white flex items-center gap-4 p-4 rounded-lg "
-            >
-              <Checkbox
-                checked={selectedDamages.some(
-                  (damage) => damage.defectedPartId === item.id
-                )}
-                // disabled={isBodyReplaced ? isBodyReplaced : false}
-                onChange={(e) => {
-                  if (!e.target.checked) {
-                    setSelectedDamages((prev) =>
-                      prev.filter((damage) => damage.defectedPartId !== item.id)
-                    );
+          {depreciation.map((item, index) => {
+            const isChecked = selectedDamages.some(
+              (damage) => damage.defectedPartId === item.id
+            );
+            return (
+              <section
+                onClick={() => {
+                  const newChecked = !isChecked;
+                  handleCheckboxChange(newChecked, item, index);
+
+                  if (!item.parameter.includes("خودرو (تعویض)")) {
+                    setItem(item);
+                    setOpen(true);
                   }
-                  console.log(isBodyReplaced);
+                  if (item.parameter.includes("خودرو (تعویض)")) {
+                    setSelectedDamages((prev) => [
+                      ...prev,
+                      {
+                        defectedPartId: item.id,
+                        accidentCoefficient: "EXTREME",
+                      },
+                    ]);
+                  }
                 }}
-              />
-              {item.parameter}
-            </section>
-          ))}
+                key={item.id}
+                className={`${(disabledStates.allDisabled && !item.parameter.includes("اتاق خودرو")) || (disabledStates.lastDisabled && index === depreciation.length - 1) ? "text-gray-400" : "text-[#505050]"} w-full h-auto bg-white flex items-center gap-4 p-4 shadow-sm rounded-lg `}
+              >
+                <Checkbox
+                  checked={isChecked}
+                  onChange={(e) => {
+                    const newChecked = e.target.checked;
+                    handleCheckboxChange(newChecked, item, index);
+                  }}
+                  disabled={
+                    (disabledStates.allDisabled &&
+                      !item.parameter.includes("اتاق")) ||
+                    (disabledStates.lastDisabled &&
+                      index === depreciation.length - 1)
+                  }
+                />
+                {item.parameter}
+              </section>
+            );
+          })}
         </section>
 
         <section
