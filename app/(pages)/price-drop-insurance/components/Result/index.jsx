@@ -93,7 +93,7 @@ export default function Index({
           جزئیات افت قیمت بیمه ای
         </h2>
         <section className="w-full bg-[#fcfcfc]  rounded-lg p-4 mt-4">
-          <section className="flex w-full text-sm justify-between">
+          <section className="grid grid-cols-3 w-full text-sm justify-items-center">
             <div className="">عنوان</div>
             <div>مبلغ افت(تومان)</div>
             <div>شدت حادثه</div>
@@ -104,9 +104,9 @@ export default function Index({
           resultData.defectDetails.map((item) => (
             <>
               <section className="w-full bg-[#fcfcfc]  rounded-lg p-4 mt-4">
-                <section className="flex w-full text-sm justify-between">
+                <section className="grid grid-cols-3 w-full text-sm justify-items-center">
                   <div className="">{item.parameter}</div>
-                  <div>{item.defectedPrice}</div>
+                  <div>{formatNumber(String(item.defectedPrice))}</div>
                   <div>{item.accidentCoefficientType}</div>
                 </section>
               </section>
@@ -119,7 +119,7 @@ export default function Index({
           </h4>
           <section className="w-full bg-[#fcfcfc] text-xs flex justify-center flex-col gap-5 items-center  rounded-lg p-4 mt-4">
             <Image alt="" src={resultData.imageUrl} width={100} height={100} />
-            <section className="flex  gap-2">
+            <section className="flex  mt-2 gap-2">
               <div className="flex flex-col   gap-3">
                 <div> حداقل قیمت بازار </div>
                 <div className="text-center">{price2} تومان</div>

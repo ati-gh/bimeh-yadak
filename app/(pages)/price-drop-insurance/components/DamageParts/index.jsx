@@ -120,6 +120,7 @@ export default function Index({
   useEffect(() => {
     console.log(selectedDamages);
   }, [selectedDamages]);
+
   return (
     <>
       <section className="">
@@ -138,9 +139,14 @@ export default function Index({
         >
           <h2 className="mr-4">نقاط آسیب دیده</h2>
           {depreciation.map((item, index) => {
-            const isChecked = selectedDamages.some(
+            const isSelected = selectedDamages.some(
               (damage) => damage.defectedPartId === item.id
             );
+
+            const checkboxValue =
+              open && !isSelected && !item.parameter.includes("خودرو (تعویض)")
+                ? false
+                : isSelected;
             return (
               <label
                 key={item.id}
@@ -154,10 +160,10 @@ export default function Index({
                 } w-full h-auto bg-white flex items-center gap-4 p-4 shadow-sm rounded-lg cursor-pointer`}
               >
                 <Checkbox
-                  checked={isChecked}
+                  checked={checkboxValue}
                   onChange={(e) => {
-                    const newChecked = e.target.checked;
-                    handleCheckboxChange(newChecked, item, index);
+                    console.log(e.target.checked);
+                    handleCheckboxChange(e.target.checked, item, index);
                   }}
                   disabled={
                     (disabledStates.allDisabled &&
