@@ -20,6 +20,7 @@ export default function Index({
   buttonLoading,
   setButtonLoading,
   calculateBox,
+  getChart,
 }) {
   // ─── Global Variable ────────────────────────────────────────────────────────────
 
@@ -97,7 +98,7 @@ export default function Index({
       setDisabledStates((prev) => ({ ...prev, lastDisabled: checked }));
     }
 
-    if (selectedOption !== null)
+    if (selectedOption !== null || item.parameter.includes("خودرو (تعویض)"))
       setSelectedDamages((prev) => {
         if (checked) {
           return [
@@ -172,7 +173,7 @@ export default function Index({
         </section>
 
         <section
-          className={`${activeTab === 2 ? "visible" : "hidden"} flex justify-center gap-4`}
+          className={`${activeTab === 2 ? "visible" : "hidden"} flex mb-5 justify-center gap-4`}
         >
           <Button
             onClick={() => {
@@ -182,6 +183,7 @@ export default function Index({
                 details: newDetails,
               }));
               calculatePrice();
+              getChart();
             }}
             loading={buttonLoading}
             className="mt-10 w-full text-xs"

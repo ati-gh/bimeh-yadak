@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import CalculateBox from "./components/CalculateBox";
 import DamageParts from "./components/DamageParts";
 import Result from "./components/Result";
-import Practice from "./components/Practice";
+import moment from "moment-jalaali";
 import { api } from "@/api";
+import { useAxios, useAxiosWithToken } from "@/hooks";
 
-import { useAxiosWithToken } from "@/hooks";
 //
 // ────────────────────────────────────────────────────────── I ──────────
 //   :::::: C O M P O N E N T : :  :   :    :     :        :          :
@@ -14,6 +14,7 @@ import { useAxiosWithToken } from "@/hooks";
 //
 
 export default function Index() {
+  const [typeId, setTypeId] = useState();
   const [calculateBox, setCalculateBox] = useState({
     carId: "",
     colorId: "",
@@ -23,6 +24,8 @@ export default function Index() {
   const [activeTab, setActivTab] = useState(1);
   const [resultData, setResultData] = useState([]);
   const [buttonLoading, setButtonLoading] = useState(false);
+  const [chartMonthList, setChartMonthList] = useState([]);
+  const [chartPriceList, setChartPriceList] = useState([]);
   // ─── Life Cycle ─────────────────────────────────────────────────────────────────
   const calculatePrice = () => {
     setButtonLoading(true);
@@ -31,7 +34,7 @@ export default function Index() {
       .post(api.car.calculatePrice, params)
       .then((res) => {
         setButtonLoading(false);
-        console.log(res.data);
+
         setResultData(res.data);
         setActivTab(3);
       })
@@ -39,6 +42,32 @@ export default function Index() {
         setButtonLoading(false);
       });
   };
+  const getChart = () => {
+    useAxios
+      .get(
+        api.car.getPriceChart +
+          `?carTypeId=${typeId?.value}&pageNo=0&pageSize=24`
+      )
+      .then((res) => {
+        let resultList = res.data.elements.reverse();
+        let priceList = [];
+        let monthList = [];
+        resultList.forEach((item, index) => {
+          let m = moment(item.jalaliPriceDate, "jYYYY/jM/jD");
+
+          if (m.jDate() === 1) {
+            priceList.push(item.price);
+            monthList.push(m.jYear() + "/" + (m.jMonth() + 1));
+          }
+        });
+        setChartPriceList(priceList);
+        setChartMonthList(monthList);
+      })
+      .catch((err) => {});
+  };
+  useEffect(() => {
+    console.log(chartMonthList);
+  }, [chartMonthList]);
   //
   // ──────────────────────────────────────────────────── I ──────────
   //   :::::: R E N D E R : :  :   :    :     :        :          :
@@ -54,8 +83,11 @@ export default function Index() {
           activeTab={activeTab}
           buttonLoading={buttonLoading}
           setButtonLoading={setButtonLoading}
+          typeId={typeId}
+          setTypeId={setTypeId}
         />
         <DamageParts
+          getChart={getChart}
           setButtonLoading={setButtonLoading}
           buttonLoading={buttonLoading}
           calculatePrice={calculatePrice}
@@ -64,8 +96,14 @@ export default function Index() {
           setActivTab={setActivTab}
           activeTab={activeTab}
         />
-        <Result resultData={resultData} activeTab={activeTab} />
-        {/* <Practice /> */}
+        <Result
+          chartMonthList={chartMonthList}
+          chartPriceList={chartPriceList}
+          typeId={typeId}
+          setTypeId={setTypeId}
+          resultData={resultData}
+          activeTab={activeTab}
+        />
       </section>
     </>
   );

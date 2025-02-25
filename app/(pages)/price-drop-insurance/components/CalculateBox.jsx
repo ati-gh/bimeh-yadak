@@ -1,7 +1,7 @@
 import { Select, Button, TextBox, Modal, Number } from "@/common";
 import React, { useState, useContext, useEffect } from "react";
 import { api } from "@/api";
-import moment from "moment-jalaali";
+
 import { useAxios, useAxiosWithToken } from "@/hooks";
 import { usePriceDropStore } from "@/store/tools/pricedrop";
 
@@ -18,6 +18,8 @@ export default function Index({
   setActivTab,
   buttonLoading,
   setButtonLoading,
+  typeId,
+  setTypeId,
 }) {
   // ─── Global Variable ────────────────────────────────────────────────────────────
 
@@ -33,7 +35,7 @@ export default function Index({
   const [yearId, setYearId] = useState();
   const [yearsLoading, setYearsLoading] = useState(false);
   const [types, setTypes] = useState([]);
-  const [typeId, setTypeId] = useState();
+
   const [typesLoading, setTypesLoading] = useState(false);
   const [colors, setColors] = useState([]);
   const [colorId, setColorId] = useState();
@@ -105,6 +107,7 @@ export default function Index({
         setColorsLoading(false);
       });
   };
+
   const searchUniqueCar = () => {
     setButtonLoading(true);
     useAxios

@@ -89,7 +89,7 @@ export default function Index({
             className="xl:block hidden"
           />
         </section>
-        <h3 className="absolute top-4 right-6 text-blue">{title}</h3>
+        <h3 className="absolute top-4 right-6 text-primary">{title}</h3>
         {showChildren && <section>{children}</section>}
       </section>
     </section>
