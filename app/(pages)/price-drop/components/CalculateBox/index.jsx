@@ -1,5 +1,3 @@
-
-
 import { Select, Button, TextBox, Modal, Number } from "@/common";
 import React, { useState, useContext, useEffect } from "react";
 import { api } from "@/api";
@@ -18,7 +16,8 @@ export default function Index({
   setChartMonthList,
   replacedParts,
   coloredParts,
-  showResultPanel
+  showResultPanel,
+  resultData,
 }) {
   // ─── Global Variable ────────────────────────────────────────────────────────────
   const updateResultData = usePriceDropStore((state) => state.updateResultData);
@@ -85,7 +84,7 @@ export default function Index({
     useAxios
       .get(
         api.car.searchCarTypeByCarModelAndYear +
-        `?carModelId=${modelId.value}&year=${yearId.value}`,
+          `?carModelId=${modelId.value}&year=${yearId.value}`
       )
       .then((res) => {
         setTypesLoading(false);
@@ -112,7 +111,7 @@ export default function Index({
     useAxios
       .get(
         api.car.searchUniqueCar +
-        `?modelId=${modelId.value}&typeId=${typeId.value}&year=${yearId.value}`,
+          `?modelId=${modelId.value}&typeId=${typeId.value}&year=${yearId.value}`
       )
       .then((res) => {
         setButtonLoading(false);
@@ -136,8 +135,7 @@ export default function Index({
       .then((res) => {
         setButtonLoading(false);
         updateResultData(res.data);
-        showResultPanel()
-
+        showResultPanel();
       })
       .catch((err) => {
         setButtonLoading(false);
@@ -147,7 +145,7 @@ export default function Index({
     useAxios
       .get(
         api.car.getPriceChart +
-        `?carTypeId=${typeId?.value}&pageNo=0&pageSize=24`,
+          `?carTypeId=${typeId?.value}&pageNo=0&pageSize=24`
       )
       .then((res) => {
         let resultList = res.data.elements.reverse();
@@ -164,7 +162,7 @@ export default function Index({
         setChartPriceList(priceList);
         setChartMonthList(monthList);
       })
-      .catch((err) => { });
+      .catch((err) => {});
   };
   const clearFrom = () => {
     setBrands([]);
@@ -260,7 +258,6 @@ export default function Index({
           </section>
           <section className="">
             <Select
-
               options={models}
               loading={modelLoading}
               state={modelId}
@@ -272,7 +269,6 @@ export default function Index({
           </section>
           <section className="">
             <Select
-
               options={years}
               loading={yearsLoading}
               state={yearId}
@@ -296,7 +292,6 @@ export default function Index({
           </section>
           <section className="">
             <Select
-
               options={colors}
               loading={colorsLoading}
               state={colorId}
@@ -307,12 +302,7 @@ export default function Index({
             />
           </section>
           <section className="">
-            <Number
-
-              title="کیلومتر"
-              state={kilometer}
-              setState={setKilometer}
-            />
+            <Number title="کیلومتر" state={kilometer} setState={setKilometer} />
           </section>
         </section>
 
@@ -333,7 +323,6 @@ export default function Index({
           </Button>
           <Button
             loading={buttonLoading}
-
             className="mt-10 w-[284px] text-blue"
             outlined
             onClick={() => {
@@ -346,7 +335,6 @@ export default function Index({
           </Button>
         </section>
       </section>
-
     </>
   );
 }

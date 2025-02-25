@@ -15,7 +15,7 @@ import moment from "moment-jalaali";
 //
 
 export default function Index({
-  resultData,
+  resultDataNew,
   activeTab,
   chartMonthList,
   chartPriceList,
@@ -24,9 +24,9 @@ export default function Index({
     return str.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-  let numberStr = String(resultData.price);
-  let numberStr1 = String(resultData.priceUp);
-  let numberStr2 = String(resultData.priceDown);
+  let numberStr = String(resultDataNew.price);
+  let numberStr1 = String(resultDataNew.priceUp);
+  let numberStr2 = String(resultDataNew.priceDown);
 
   let price = formatNumber(numberStr);
   let price1 = formatNumber(numberStr1);
@@ -37,13 +37,17 @@ export default function Index({
   return (
     <>
       {open && (
-        <ModalInfo open={open} setOpen={setOpen} resultData={resultData} />
+        <ModalInfo
+          open={open}
+          setOpen={setOpen}
+          resultDataNew={resultDataNew}
+        />
       )}
       {openChart && (
         <ModalChart
           openChart={openChart}
           setOpenChart={setOpenChart}
-          resultData={resultData}
+          resultDataNew={resultDataNew}
           chartMonthList={chartMonthList}
           chartPriceList={chartPriceList}
         />
@@ -71,7 +75,9 @@ export default function Index({
               نوع خودرو
             </div>
             <div>
-              {resultData.ordinaryCar ? resultData.ordinaryCar : "نامتعارف"}
+              {resultDataNew.ordinaryCar
+                ? resultDataNew.ordinaryCar
+                : "نامتعارف"}
             </div>
           </section>{" "}
           <section className="flex w-full text-sm mt-4 text-red justify-between">
@@ -85,7 +91,7 @@ export default function Index({
         <section className="w-full bg-[#fcfcfc] text-[#505050]  border-[2px] border-[#ffc114] rounded-lg p-4 mt-5">
           <span>نکته:</span>
           <p className=" text-xs leading-[27px] mt-4 rounded-lg bg-white text-justify p-4">
-            {resultData.ruleDescription}
+            {resultDataNew.ruleDescription}
           </p>
         </section>
         <h2 className={` pt-4`}>
@@ -100,8 +106,8 @@ export default function Index({
           </section>
         </section>
 
-        {resultData.defectDetails &&
-          resultData.defectDetails.map((item) => (
+        {resultDataNew.defectDetails &&
+          resultDataNew.defectDetails.map((item) => (
             <>
               <section className="w-full bg-[#fcfcfc]  rounded-lg p-4 mt-4">
                 <section className="grid grid-cols-3 w-full text-sm justify-items-center">
@@ -115,10 +121,15 @@ export default function Index({
         <section className="w-full bg-[#fcfcfc]  rounded-lg p-4 mt-4">
           <h3 className="text-center text-lg"> قیمت خودرو</h3>
           <h4 className="text-center mt-2 text-[#ffc114] text-base">
-            {resultData.nickName}
+            {resultDataNew.nickName}
           </h4>
           <section className="w-full bg-[#fcfcfc] text-xs flex justify-center flex-col gap-5 items-center  rounded-lg p-4 mt-4">
-            <Image alt="" src={resultData.imageUrl} width={100} height={100} />
+            <Image
+              alt=""
+              src={resultDataNew.imageUrl}
+              width={100}
+              height={100}
+            />
             <section className="flex  mt-2 gap-2">
               <div className="flex flex-col   gap-3">
                 <div> حداقل قیمت بازار </div>

@@ -81,12 +81,18 @@ export default function Index({
   }, [calculateBox]);
 
   const handleCheckboxChange = (checked, item, index) => {
-    if (item.parameter.includes("اتاق")) {
+    if (item.parameter.includes("خودرو (تعویض)")) {
       if (checked) {
-        setDisabledStates({ allDisabled: true, lastDisabled: false });
         setSelectedDamages([
           { defectedPartId: item.id, accidentCoefficient: "EXTREME" },
         ]);
+        console.log(selectedDamages);
+        if (item.parameter.includes("اتاق خودرو (تعویض)")) {
+          setDisabledStates({ allDisabled: true, lastDisabled: false });
+        }
+        if (item.parameter.includes("موتور خودرو (تعویض)")) {
+          setDisabledStates({ lastDisabled: true });
+        }
       } else {
         setDisabledStates({ allDisabled: false, lastDisabled: false });
         setSelectedDamages([]);
@@ -188,7 +194,7 @@ export default function Index({
                 ...prev,
                 details: newDetails,
               }));
-              calculatePrice();
+
               getChart();
             }}
             loading={buttonLoading}

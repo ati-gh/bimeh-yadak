@@ -173,8 +173,9 @@ export default function Index() {
     },
   ];
   // ─── States ─────────────────────────────────────────────────────────────────────
-  const [activeSide, setActiveSide] = useState(1);
 
+  const [activeSide, setActiveSide] = useState(1);
+  const [activeOptions, setActiveOptions] = useState(false);
   const [resultPanelShow, setResultPanelShow] = useState(false);
   const resultData = usePriceDropStore((state) => state.resultData);
   const coloredParts = usePriceDropStore((state) => state.coloredParts);
@@ -191,6 +192,9 @@ export default function Index() {
     (state) => state.updateReplacedParts
   );
   // ─── Functions ──────────────────────────────────────────────────────────────────
+  const handleOnChangeDeactive = () => {
+    setActiveOptions(!activeOptions);
+  };
   const partsOnchange = (e, type) => {
     if (type === "color") {
       let parts = [];
@@ -266,13 +270,33 @@ export default function Index() {
           </p>
           <section className="flex justify-between mt-[61px]">
             <section className="w-[221px] h-[498px]">
-              <SelectedPartView depList={dep} />
+              <SelectedPartView
+                depList={dep}
+                activeOptions={activeOptions}
+                handleOnChangeDeactive={handleOnChangeDeactive}
+              />
             </section>
             <section className="w-[689px] h-[468px] flex justify-center items-center">
-              <Front activeSide={activeSide} partsOnchange={partsOnchange} />
-              <Back activeSide={activeSide} partsOnchange={partsOnchange} />
-              <Right activeSide={activeSide} partsOnchange={partsOnchange} />
-              <Left activeSide={activeSide} partsOnchange={partsOnchange} />
+              <Front
+                activeOptions={activeOptions}
+                activeSide={activeSide}
+                partsOnchange={partsOnchange}
+              />
+              <Back
+                activeOptions={activeOptions}
+                activeSide={activeSide}
+                partsOnchange={partsOnchange}
+              />
+              <Right
+                activeOptions={activeOptions}
+                activeSide={activeSide}
+                partsOnchange={partsOnchange}
+              />
+              <Left
+                activeOptions={activeOptions}
+                activeSide={activeSide}
+                partsOnchange={partsOnchange}
+              />
             </section>
             <section className="w-[221px] h-[520px] flex flex-col justify-between">
               <SideSelector

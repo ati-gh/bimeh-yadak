@@ -22,7 +22,7 @@ export default function Index() {
     details: [],
   });
   const [activeTab, setActivTab] = useState(1);
-  const [resultData, setResultData] = useState([]);
+  const [resultDataNew, setResultDataNew] = useState([]);
   const [buttonLoading, setButtonLoading] = useState(false);
   const [chartMonthList, setChartMonthList] = useState([]);
   const [chartPriceList, setChartPriceList] = useState([]);
@@ -35,7 +35,7 @@ export default function Index() {
       .then((res) => {
         setButtonLoading(false);
 
-        setResultData(res.data);
+        setResultDataNew(res.data);
         setActivTab(3);
       })
       .catch((err) => {
@@ -101,7 +101,7 @@ export default function Index() {
           chartPriceList={chartPriceList}
           typeId={typeId}
           setTypeId={setTypeId}
-          resultData={resultData}
+          resultDataNew={resultDataNew}
           activeTab={activeTab}
         />
       </section>
