@@ -35,10 +35,6 @@ export default function Index({
     allDisabled: false,
     lastDisabled: false,
   });
-  const [checkboxes, setCheckboxes] = useState({
-    body: false,
-    engine: false,
-  });
 
   // ─── Functions ──────────────────────────────────────────────────────────────────
   const closeModal = () => {
@@ -59,9 +55,6 @@ export default function Index({
   useEffect(() => {
     depreciationList();
   }, []);
-  const handleItem = (item) => {
-    setItem(item);
-  };
 
   const handleSelection = (defectedPartId, accidentCoefficient) => {
     setSelectedOption({ defectedPartId, accidentCoefficient });
@@ -104,24 +97,28 @@ export default function Index({
       setDisabledStates((prev) => ({ ...prev, lastDisabled: checked }));
     }
 
-    setSelectedDamages((prev) => {
-      if (checked) {
-        return [
-          ...prev,
-          { defectedPartId: item.id, accidentCoefficient: "EXTREME" },
-        ];
-      } else {
-        return prev.filter((damage) => damage.defectedPartId !== item.id);
-      }
-    });
+    if (selectedOption !== null)
+      setSelectedDamages((prev) => {
+        if (checked) {
+          return [
+            ...prev,
+            { defectedPartId: item.id, accidentCoefficient: "EXTREME" },
+          ];
+        } else {
+          return prev.filter((damage) => damage.defectedPartId !== item.id);
+        }
+      });
 
     // Open modal for non-replacement items
     if (!item.parameter.includes("خودرو (تعویض)")) {
+      setSelectedOption(null);
       setItem(item);
       setOpen(true);
     }
   };
-
+  useEffect(() => {
+    console.log(selectedDamages);
+  }, [selectedDamages]);
   return (
     <>
       <section className="">
@@ -148,7 +145,7 @@ export default function Index({
                 key={item.id}
                 className={`${
                   (disabledStates.allDisabled &&
-                    !item.parameter.includes("اتاق")) ||
+                    !item.parameter.includes("اتاق خودرو")) ||
                   (disabledStates.lastDisabled &&
                     index === depreciation.length - 1)
                     ? "text-gray-400"
@@ -163,7 +160,7 @@ export default function Index({
                   }}
                   disabled={
                     (disabledStates.allDisabled &&
-                      !item.parameter.includes("اتاق")) ||
+                      !item.parameter.includes("اتاق خودرو")) ||
                     (disabledStates.lastDisabled &&
                       index === depreciation.length - 1)
                   }

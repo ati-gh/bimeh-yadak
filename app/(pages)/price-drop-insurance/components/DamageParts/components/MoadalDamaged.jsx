@@ -25,9 +25,7 @@ export default function Index({
   // ─── States ─────────────────────────────────────────────────────────────────────
 
   // ─── Functions ──────────────────────────────────────────────────────────────────
-  useEffect(() => {
-    console.log(item);
-  }, [open]);
+
   //
   // ──────────────────────────────────────────────────── I ──────────
   //   :::::: R E N D E R : :  :   :    :     :        :          :
@@ -60,7 +58,9 @@ export default function Index({
                 checked={
                   selectedOption?.accidentCoefficient === accidentCoefficient
                 }
-                onChange={() => handleSelection(item.id, accidentCoefficient)}
+                onChange={() => {
+                  handleSelection(item.id, accidentCoefficient);
+                }}
               >
                 {label}
               </Radio>
